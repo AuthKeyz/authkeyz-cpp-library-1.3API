@@ -299,7 +299,7 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force build-output | Out-Null
-          Get-ChildItem -Path . -Recurse -Filter *.lib | ForEach-Object {
+          Get-ChildItem -Path . -Recurse -Filter *.lib | Where-Object { $_.FullName -notmatch '[\\/]build-output[\\/]' } | ForEach-Object {
             Copy-Item -Path $_.FullName -Destination build-output -Force
           }
 
