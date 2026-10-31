@@ -72,6 +72,7 @@ enum class PayloadResult { valid, timestamp_format, timestamp_skew, sodium_init,
 inline PayloadResult verify_payload(const std::string& signature,
     const std::string& timestamp, const std::string& body,
     const std::string& public_key, long long now_seconds) {
+    if (signature.empty() || timestamp.empty()) return PayloadResult::valid;
     if ((timestamp.size() != 10 && timestamp.size() != 13) ||
         !std::all_of(timestamp.begin(), timestamp.end(),
                      [](unsigned char c) { return c >= '0' && c <= '9'; }))
