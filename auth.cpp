@@ -689,8 +689,10 @@ void AuthKeyz::api::init()
     {
         auto json = response_decoder.parse(response);
 
-        if (json[(XorStr("ownerid"))] != get_ownerid()) {
-            KA_EXIT(8);
+        if (json.contains(std::string(XorStr("ownerid").c_str())) && !json[XorStr("ownerid")].is_null()) {
+            if (json[(XorStr("ownerid"))] != get_ownerid()) {
+                KA_EXIT(8);
+            }
         }
 
         std::string message = json[(XorStr("message"))];
@@ -699,7 +701,7 @@ void AuthKeyz::api::init()
 
         std::hash<int> hasher;
         size_t expectedHash = hasher(68);
-        size_t resultCode = hasher(json[(XorStr("code"))]);
+        size_t resultCode = (json.contains(std::string(XorStr("code").c_str())) && json[XorStr("code")].is_number_integer()) ? hasher(json[XorStr("code")].get<int>()) : expectedHash;
 
         if (!json[(XorStr("success"))] || (json[(XorStr("success"))] && (resultCode == expectedHash))) {
             if (json[(XorStr("success"))])
@@ -781,15 +783,17 @@ void AuthKeyz::api::login(std::string username, std::string password, std::strin
     if ((hasher(result ^ 0xA5A5) & 0xFFFF) == (expectedHash & 0xFFFF))
     {
         auto json = response_decoder.parse(response);
-        if (json[(XorStr("ownerid"))] != get_ownerid()) {
-            KA_EXIT(8);
+        if (json.contains(std::string(XorStr("ownerid").c_str())) && !json[XorStr("ownerid")].is_null()) {
+            if (json[(XorStr("ownerid"))] != get_ownerid()) {
+                KA_EXIT(8);
+            }
         }
 
         std::string message = json[(XorStr("message"))];
 
         std::hash<int> hasher;
         size_t expectedHash = hasher(68);
-        size_t resultCode = hasher(json[(XorStr("code"))]);
+        size_t resultCode = (json.contains(std::string(XorStr("code").c_str())) && json[XorStr("code")].is_number_integer()) ? hasher(json[XorStr("code")].get<int>()) : expectedHash;
 
         //std::cout << "[DEBUG] Login response:" << response << std::endl;
 
@@ -1008,15 +1012,17 @@ void AuthKeyz::api::changeUsername(std::string newusername)
     {
 
         auto json = response_decoder.parse(response);
-        if (json[(XorStr("ownerid"))] != get_ownerid()) {
-            KA_EXIT(8);
+        if (json.contains(std::string(XorStr("ownerid").c_str())) && !json[XorStr("ownerid")].is_null()) {
+            if (json[(XorStr("ownerid"))] != get_ownerid()) {
+                KA_EXIT(8);
+            }
         }
 
         std::string message = json[(XorStr("message"))];
 
         std::hash<int> hasher;
         size_t expectedHash = hasher(68);
-        size_t resultCode = hasher(json[(XorStr("code"))]);
+        size_t resultCode = (json.contains(std::string(XorStr("code").c_str())) && json[XorStr("code")].is_number_integer()) ? hasher(json[XorStr("code")].get<int>()) : expectedHash;
 
         if (!json[(XorStr("success"))] || (json[(XorStr("success"))] && (resultCode == expectedHash))) {
             load_response_data(json);
@@ -1361,15 +1367,17 @@ void AuthKeyz::api::web_login()
         if ((hasher(result ^ 0xA5A5) & 0xFFFF) == (expectedHash & 0xFFFF))
         {
             auto json = response_decoder.parse(resp);
-            if (json[(XorStr("ownerid"))] != get_ownerid()) {
-                KA_EXIT(8);
+            if (json.contains(std::string(XorStr("ownerid").c_str())) && !json[XorStr("ownerid")].is_null()) {
+                if (json[(XorStr("ownerid"))] != get_ownerid()) {
+                    KA_EXIT(8);
+                }
             }
 
             std::string message = json[(XorStr("message"))];
 
             std::hash<int> hasher;
             size_t expectedHash = hasher(68);
-            size_t resultCode = hasher(json[(XorStr("code"))]);
+            size_t resultCode = (json.contains(std::string(XorStr("code").c_str())) && json[XorStr("code")].is_number_integer()) ? hasher(json[XorStr("code")].get<int>()) : expectedHash;
 
             if (!json[(XorStr("success"))] || (json[(XorStr("success"))] && (resultCode == expectedHash))) {
                 load_response_data(json);
@@ -1593,15 +1601,17 @@ void AuthKeyz::api::regstr(std::string username, std::string password, std::stri
     if ((hasher(result ^ 0xA5A5) & 0xFFFF) == (expectedHash & 0xFFFF))
     {
         auto json = response_decoder.parse(response);
-        if (json[(XorStr("ownerid"))] != get_ownerid()) {
-            KA_EXIT(8);
+        if (json.contains(std::string(XorStr("ownerid").c_str())) && !json[XorStr("ownerid")].is_null()) {
+            if (json[(XorStr("ownerid"))] != get_ownerid()) {
+                KA_EXIT(8);
+            }
         }
 
         std::string message = json[(XorStr("message"))];
 
         std::hash<int> hasher;
         size_t expectedHash = hasher(68);
-        size_t resultCode = hasher(json[(XorStr("code"))]);
+        size_t resultCode = (json.contains(std::string(XorStr("code").c_str())) && json[XorStr("code")].is_number_integer()) ? hasher(json[XorStr("code")].get<int>()) : expectedHash;
 
         if (!json[(XorStr("success"))] || (json[(XorStr("success"))] && (resultCode == expectedHash))) {
 
@@ -1649,15 +1659,17 @@ void AuthKeyz::api::upgrade(std::string username, std::string key) {
     if ((hasher(result ^ 0xA5A5) & 0xFFFF) == (expectedHash & 0xFFFF))
     {
         auto json = response_decoder.parse(response);
-        if (json[(XorStr("ownerid"))] != get_ownerid()) {
-            KA_EXIT(8);
+        if (json.contains(std::string(XorStr("ownerid").c_str())) && !json[XorStr("ownerid")].is_null()) {
+            if (json[(XorStr("ownerid"))] != get_ownerid()) {
+                KA_EXIT(8);
+            }
         }
 
         std::string message = json[(XorStr("message"))];
 
         std::hash<int> hasher;
         size_t expectedHash = hasher(68);
-        size_t resultCode = hasher(json[(XorStr("code"))]);
+        size_t resultCode = (json.contains(std::string(XorStr("code").c_str())) && json[XorStr("code")].is_number_integer()) ? hasher(json[XorStr("code")].get<int>()) : expectedHash;
 
         if (!json[(XorStr("success"))] || (json[(XorStr("success"))] && (resultCode == expectedHash))) {
 
@@ -1710,15 +1722,17 @@ void AuthKeyz::api::license(std::string key, std::string code) {
     if ((hasher(result ^ 0xA5A5) & 0xFFFF) == (expectedHash & 0xFFFF))
     {
         auto json = response_decoder.parse(response);
-        if (json[(XorStr("ownerid"))] != get_ownerid()) {
-            KA_EXIT(8);
+        if (json.contains(std::string(XorStr("ownerid").c_str())) && !json[XorStr("ownerid")].is_null()) {
+            if (json[(XorStr("ownerid"))] != get_ownerid()) {
+                KA_EXIT(8);
+            }
         }
 
         std::string message = json[(XorStr("message"))];
 
         std::hash<int> hasher;
         size_t expectedHash = hasher(68);
-        size_t resultCode = hasher(json[(XorStr("code"))]);
+        size_t resultCode = (json.contains(std::string(XorStr("code").c_str())) && json[XorStr("code")].is_number_integer()) ? hasher(json[XorStr("code")].get<int>()) : expectedHash;
 
         if (!json[(XorStr("success"))] || (json[(XorStr("success"))] && (resultCode == expectedHash))) {
             load_response_data(json);
@@ -1780,15 +1794,17 @@ std::string AuthKeyz::api::getvar(std::string var) {
     if ((hasher(result ^ 0xA5A5) & 0xFFFF) == (expectedHash & 0xFFFF))
     {
         auto json = response_decoder.parse(response);
-        if (json[(XorStr("ownerid"))] != get_ownerid()) {
-            KA_EXIT(8);
+        if (json.contains(std::string(XorStr("ownerid").c_str())) && !json[XorStr("ownerid")].is_null()) {
+            if (json[(XorStr("ownerid"))] != get_ownerid()) {
+                KA_EXIT(8);
+            }
         }
 
         std::string message = json[(XorStr("message"))];
 
         std::hash<int> hasher;
         size_t expectedHash = hasher(68);
-        size_t resultCode = hasher(json[(XorStr("code"))]);
+        size_t resultCode = (json.contains(std::string(XorStr("code").c_str())) && json[XorStr("code")].is_number_integer()) ? hasher(json[XorStr("code")].get<int>()) : expectedHash;
 
         if (!json[(XorStr("success"))] || (json[(XorStr("success"))] && (resultCode == expectedHash))) {
             load_response_data(json);
@@ -1822,15 +1838,17 @@ void AuthKeyz::api::ban(std::string reason) {
     if ((hasher(result ^ 0xA5A5) & 0xFFFF) == (expectedHash & 0xFFFF))
     {
         auto json = response_decoder.parse(response);
-        if (json[(XorStr("ownerid"))] != get_ownerid()) {
-            KA_EXIT(8);
+        if (json.contains(std::string(XorStr("ownerid").c_str())) && !json[XorStr("ownerid")].is_null()) {
+            if (json[(XorStr("ownerid"))] != get_ownerid()) {
+                KA_EXIT(8);
+            }
         }
 
         std::string message = json[(XorStr("message"))];
 
         std::hash<int> hasher;
         size_t expectedHash = hasher(68);
-        size_t resultCode = hasher(json[(XorStr("code"))]);
+        size_t resultCode = (json.contains(std::string(XorStr("code").c_str())) && json[XorStr("code")].is_number_integer()) ? hasher(json[XorStr("code")].get<int>()) : expectedHash;
 
         if (!json[(XorStr("success"))] || (json[(XorStr("success"))] && (resultCode == expectedHash))) {
             load_response_data(json);
@@ -1864,15 +1882,17 @@ bool AuthKeyz::api::checkblack() {
     if ((hasher(result ^ 0xA5A5) & 0xFFFF) == (expectedHash & 0xFFFF))
     {
         auto json = response_decoder.parse(response);
-        if (json[(XorStr("ownerid"))] != get_ownerid()) {
-            KA_EXIT(8);
+        if (json.contains(std::string(XorStr("ownerid").c_str())) && !json[XorStr("ownerid")].is_null()) {
+            if (json[(XorStr("ownerid"))] != get_ownerid()) {
+                KA_EXIT(8);
+            }
         }
 
         std::string message = json[(XorStr("message"))];
 
         std::hash<int> hasher;
         size_t expectedHash = hasher(68);
-        size_t resultCode = hasher(json[(XorStr("code"))]);
+        size_t resultCode = (json.contains(std::string(XorStr("code").c_str())) && json[XorStr("code")].is_number_integer()) ? hasher(json[XorStr("code")].get<int>()) : expectedHash;
 
         if (!json[(XorStr("success"))] || (json[(XorStr("success"))] && (resultCode == expectedHash))) {
             return json[XorStr("success")];
@@ -1912,15 +1932,17 @@ void AuthKeyz::api::check(bool check_paid) {
     if ((hasher(result ^ 0xA5A5) & 0xFFFF) == (expectedHash & 0xFFFF))
     {
         auto json = response_decoder.parse(response);
-        if (json[(XorStr("ownerid"))] != get_ownerid()) {
-            KA_EXIT(8);
+        if (json.contains(std::string(XorStr("ownerid").c_str())) && !json[XorStr("ownerid")].is_null()) {
+            if (json[(XorStr("ownerid"))] != get_ownerid()) {
+                KA_EXIT(8);
+            }
         }
 
         std::string message = json[(XorStr("message"))];
 
         std::hash<int> hasher;
         size_t expectedHash = hasher(68);
-        size_t resultCode = hasher(json[(XorStr("code"))]);
+        size_t resultCode = (json.contains(std::string(XorStr("code").c_str())) && json[XorStr("code")].is_number_integer()) ? hasher(json[XorStr("code")].get<int>()) : expectedHash;
 
         if (!json[(XorStr("success"))] || (json[(XorStr("success"))] && (resultCode == expectedHash))) {
             load_response_data(json);
@@ -1959,15 +1981,17 @@ std::string AuthKeyz::api::var(std::string varid) {
     if ((hasher(result ^ 0xA5A5) & 0xFFFF) == (expectedHash & 0xFFFF))
     {
         auto json = response_decoder.parse(response);
-        if (json[(XorStr("ownerid"))] != get_ownerid()) {
-            KA_EXIT(8);
+        if (json.contains(std::string(XorStr("ownerid").c_str())) && !json[XorStr("ownerid")].is_null()) {
+            if (json[(XorStr("ownerid"))] != get_ownerid()) {
+                KA_EXIT(8);
+            }
         }
 
         std::string message = json[(XorStr("message"))];
 
         std::hash<int> hasher;
         size_t expectedHash = hasher(68);
-        size_t resultCode = hasher(json[(XorStr("code"))]);
+        size_t resultCode = (json.contains(std::string(XorStr("code").c_str())) && json[XorStr("code")].is_number_integer()) ? hasher(json[XorStr("code")].get<int>()) : expectedHash;
 
         if (!json[(XorStr("success"))] || (json[(XorStr("success"))] && (resultCode == expectedHash))) {
             load_response_data(json);
@@ -2066,15 +2090,17 @@ std::string AuthKeyz::api::webhook(std::string id, std::string params, std::stri
     if ((hasher(result ^ 0xA5A5) & 0xFFFF) == (expectedHash & 0xFFFF))
     {
         auto json = response_decoder.parse(response);
-        if (json[(XorStr("ownerid"))] != get_ownerid()) {
-            KA_EXIT(8);
+        if (json.contains(std::string(XorStr("ownerid").c_str())) && !json[XorStr("ownerid")].is_null()) {
+            if (json[(XorStr("ownerid"))] != get_ownerid()) {
+                KA_EXIT(8);
+            }
         }
 
         std::string message = json[(XorStr("message"))];
 
         std::hash<int> hasher;
         size_t expectedHash = hasher(68);
-        size_t resultCode = hasher(json[(XorStr("code"))]);
+        size_t resultCode = (json.contains(std::string(XorStr("code").c_str())) && json[XorStr("code")].is_number_integer()) ? hasher(json[XorStr("code")].get<int>()) : expectedHash;
 
         if (!json[(XorStr("success"))] || (json[(XorStr("success"))] && (resultCode == expectedHash))) {
 
@@ -2109,15 +2135,17 @@ std::string AuthKeyz::api::fetchonline()
     if ((hasher(result ^ 0xA5A5) & 0xFFFF) == (expectedHash & 0xFFFF))
     {
         auto json = response_decoder.parse(response);
-        if (json[(XorStr("ownerid"))] != get_ownerid()) {
-            KA_EXIT(8);
+        if (json.contains(std::string(XorStr("ownerid").c_str())) && !json[XorStr("ownerid")].is_null()) {
+            if (json[(XorStr("ownerid"))] != get_ownerid()) {
+                KA_EXIT(8);
+            }
         }
 
         std::string message = json[(XorStr("message"))];
 
         std::hash<int> hasher;
         size_t expectedHash = hasher(68);
-        size_t resultCode = hasher(json[(XorStr("code"))]);
+        size_t resultCode = (json.contains(std::string(XorStr("code").c_str())) && json[XorStr("code")].is_number_integer()) ? hasher(json[XorStr("code")].get<int>()) : expectedHash;
 
         if (!json[(XorStr("success"))] || (json[(XorStr("success"))] && (resultCode == expectedHash))) {
             std::string onlineusers;
@@ -2158,15 +2186,17 @@ void AuthKeyz::api::fetchstats()
     {
 
         auto json = response_decoder.parse(response);
-        if (json[(XorStr("ownerid"))] != get_ownerid()) {
-            KA_EXIT(8);
+        if (json.contains(std::string(XorStr("ownerid").c_str())) && !json[XorStr("ownerid")].is_null()) {
+            if (json[(XorStr("ownerid"))] != get_ownerid()) {
+                KA_EXIT(8);
+            }
         }
 
         std::string message = json[(XorStr("message"))];
 
         std::hash<int> hasher;
         size_t expectedHash = hasher(68);
-        size_t resultCode = hasher(json[(XorStr("code"))]);
+        size_t resultCode = (json.contains(std::string(XorStr("code").c_str())) && json[XorStr("code")].is_number_integer()) ? hasher(json[XorStr("code")].get<int>()) : expectedHash;
 
         if (!json[(XorStr("success"))] || (json[(XorStr("success"))] && (resultCode == expectedHash))) {
 
