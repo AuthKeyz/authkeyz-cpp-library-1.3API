@@ -136,7 +136,7 @@ jobs:
           namespace json_errors_test {
           int run() {
               bool parse_error = false, type_error = false;
-              try { nlohmann::json::parse("{broken"); }
+              try { (void)nlohmann::json::parse("{broken"); }
               catch (const nlohmann::json::parse_error&) { parse_error = true; }
               try { nlohmann::json("not a boolean").get<bool>(); }
               catch (const nlohmann::json::type_error&) { type_error = true; }
@@ -290,7 +290,7 @@ jobs:
           '@ | Set-Content -LiteralPath $source
           $object = Join-Path $env:RUNNER_TEMP 'security-regression.obj'
           $executable = Join-Path $env:RUNNER_TEMP 'security-regression.exe'
-          & cl.exe /nologo /std:c++17 /EHsc /MD "/I$env:GITHUB_WORKSPACE" "/I$env:GITHUB_WORKSPACE\libsodium" $source "/Fo$object" "/Fe$executable" /link "$env:GITHUB_WORKSPACE\x64\Release\library_x64.lib" "$env:GITHUB_WORKSPACE\curl\zlib.lib" user32.lib shell32.lib
+          & cl.exe /nologo /std:c++17 /EHsc /MD "/I$env:GITHUB_WORKSPACE" "/I$env:GITHUB_WORKSPACE\libsodium" $source "/Fo$object" "/Fe$executable" /link "$env:GITHUB_WORKSPACE\x64\Release\library_x64.lib" "$env:GITHUB_WORKSPACE\curl\zlib.lib" user32.lib shell32.lib /NODEFAULTLIB:LIBCMT
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           & $executable
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
