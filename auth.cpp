@@ -3385,7 +3385,8 @@ std::string AuthKeyz::api::req(std::string data, const std::string& url) {
             reinterpret_cast<const unsigned char*>(signed_message_guard.data()),
             signed_message_guard.size(),
             pk_guard) != 0) {
-            // Ed25519 signature mismatch
+            curl_guard.reset();
+            throw request_error(XorStr("Ed25519 signature verification failed in request guard."));
         }
     }
 
